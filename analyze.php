@@ -1,6 +1,9 @@
 <?php
 
-if (isset($_POST['analyze'])) {
+ //Verifying the user indeed has submitted and image and hasnt typed the URL of this page directly
+if (isset($_POST['analyze'])) { 
+    //Making sure the image we have been submitted is a valid image file, taken from here https://stackoverflow.com/questions/9314164/php-uploading-files-image-only-checking
+    // I decided to make use of this function since it is simple and straight forward
     if (getimagesize($_FILES['image']['tmp_name']) == 0) {
         echo "<h1>Not an image file</h1>";
         header("Refresh:3; url=index.php");
@@ -10,6 +13,11 @@ if (isset($_POST['analyze'])) {
     $target_dir = "images/";
     $file_type = $_FILES['image']['type'];
     $target_file = $target_dir . basename($_FILES['image']['name']);
+
+    /*
+    Preparing the path for the image to be moved to a permanent image file in the /images directory, 
+    we need to do this in order to be able to later display the actual image on the screen
+    */
 
     if ($file_type == "image/jpeg") {
         $img = imagecreatefromjpeg($_FILES['image']['tmp_name']);
@@ -25,12 +33,23 @@ if (isset($_POST['analyze'])) {
         exit();
     }
 
+    /*
+    Creating a GD object using the appropriate type of image which from my understanding is going to allow us to later use this object in
+    order to retrieve the color of a specific pixel in the image
+    */
+
 
     $image_size = getimagesize($_FILES['image']['tmp_name']);
     move_uploaded_file($_FILES['image']['tmp_name'], $target_file);
     $width = $image_size[0];
     $height = $image_size[1];
     $pixels = array();
+
+    /*
+        Obtaining the width and height of the picture since we are going to scan every pixel line by line in the picture and get its color
+        we have also moved the file to the path we have previously defined in $target_file and last we have created an array which
+        we are going to use as an array of counters to count how many times a specific RGB code happens in the picture
+    */
 
     for ($i = 0; $i < $width; $i++) {
         for ($j = 0; $j < $height; $j++) {
@@ -43,10 +62,27 @@ if (isset($_POST['analyze'])) {
             }
         }
     }
+
+    /*
+        Scanning every columnm and every row in the picture, with help of the imagecolorsforindex() function we can retreive the color of the
+        pixel at the specific X,Y coordinate taken from here https://stackoverflow.com/questions/7727843/detecting-colors-for-an-image-using-php
+        We need to use the imagecolorsforindex() function in order to convert the value returned from imagecolorat() to a proper array containing 
+        values of the pixel regarding its color.
+        The color of the pixel is defined by 4 seperate values, red, green, blue and opacity.
+        With use of the array of counters we verify if there has been a previous entry for that RGB code using isset() which will make sure that
+        key is defined in the array, if it is than we simply increment its value by 1 meaning that specific RGB code has already been previously seen
+
+
+    */
     arsort($pixels);
     $top_five = array_slice($pixels, 0, 5);
+
+    /*
+            sorting the array of counters based on the value (the amount of times a color appeared in a nutshell) in reverse order (to big the biggest)
+            and then slicing the array to only get the top 5 most popular colors
+    */
 } else {
-    header("Location:index.php");
+    header("Location:index.php"); // Redirect incase of isset() returns false meaning the user tried to enter the URL of analyze.php without submitting an image
 }
 
 ?>
@@ -93,6 +129,17 @@ if (isset($_POST['analyze'])) {
 <body>
     <div id="container">
         <?php
+        /*
+            We first of all display the image the user has uploaded using the $target_file that contains the path to the file 
+            we have previously moved from being a temporary file in the tmp folder.
+            After that we iterate over the 5 keys and values in the top 5 most popular colors,
+            we split the array into a string so we can use their value in the background color of the div and also to show the
+            user the value of that specific pixel and also in order to calculate the % that color appears in the picture
+            the $code_percent is calculated by dividing the amount of times that RGB code has appeared in the picture and dividing it
+            by the product of the width*height of the picture and then multiplying by 100 to get the value in percentages
+
+
+        */
         echo "<img src=" . $target_file . ">";
         foreach ($top_five as $code => $value) {
             $split_code = explode(" ", $code);

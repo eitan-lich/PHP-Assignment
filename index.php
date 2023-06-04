@@ -42,6 +42,8 @@
 </head>
 
 <body>
+    <!-- Sending the selected image to our analyze.php file which would handle the logic and display the color information,
+        additionally we have to specify the enctype of our form to be multipart/form-data in order to send files using the POST method -->
     <form action="analyze.php" method="post" enctype="multipart/form-data">
         <p>Select an image to analyze its colors</p>
         <div id="input-wrapper">
