@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     <title>Image color analyzer</title>
     <style>
+
+        /* basic styling for our input form, using flexbox to align items horizontally and vertically */
         body {
             height: 100vh;
             display: flex;

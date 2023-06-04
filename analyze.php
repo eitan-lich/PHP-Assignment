@@ -2,8 +2,10 @@
 
  //Verifying the user indeed has submitted an image and hasnt typed the URL of this page directly
 if (isset($_POST['analyze'])) { 
-    //Making sure the image we have been submitted is a valid image file, taken from here https://stackoverflow.com/questions/9314164/php-uploading-files-image-only-checking
-    // I decided to make use of this function since it is simple and straight forward
+    /*
+    Making sure the image we have been submitted is a valid image file, taken from here https://stackoverflow.com/questions/9314164/php-uploading-files-image-only-checking
+    I decided to make use of this function since it is simple and straight forward
+    */ 
     if (getimagesize($_FILES['image']['tmp_name']) == 0) {
         echo "<h1>Not an image file</h1>";
         header("Refresh:3; url=index.php");
@@ -15,8 +17,8 @@ if (isset($_POST['analyze'])) {
     $target_file = $target_dir . basename($_FILES['image']['name']);
 
     /*
-    Preparing the path for the image to be moved to a permanent image file in the /images directory, 
-    we need to do this in order to be able to later display the actual image on the screen
+    Preparing the path for the temporary image file to be moved to a permanent image file in the /images directory, 
+    we need to do this in order to be able to later use the real path of the image to display the image 
     */
 
     if ($file_type == "image/jpeg") {
@@ -132,7 +134,7 @@ if (isset($_POST['analyze'])) {
         /*
             We first of all display the image the user has uploaded using the $target_file that contains the path to the file 
             we have previously moved from being a temporary file in the tmp folder.
-            After that we iterate over the 5 keys and values in the top 5 most popular colors,
+            After that we iterate over the 5 keys and values in the top 5 most popular colors array,
             we split the array into a string so we can use their value in the background color of the div and also to show the
             user the value of that specific pixel and also in order to calculate the % that color appears in the picture
             the $code_percent is calculated by dividing the amount of times that RGB code has appeared in the picture and dividing it
