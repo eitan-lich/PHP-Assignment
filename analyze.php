@@ -80,7 +80,7 @@ if (isset($_POST['analyze'])) {
     $top_five = array_slice($pixels, 0, 5);
 
     /*
-            sorting the array of counters based on the value (the amount of times a color appeared in a nutshell) in reverse order (to big the biggest)
+            sorting the array of counters based on the value (the amount of times a color appeared in a nutshell) in reverse order (to get the biggest)
             and then slicing the array to only get the top 5 most popular colors
     */
 } else {
