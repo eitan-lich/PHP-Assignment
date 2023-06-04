@@ -1,6 +1,6 @@
 <?php
 
- //Verifying the user indeed has submitted and image and hasnt typed the URL of this page directly
+ //Verifying the user indeed has submitted an image and hasnt typed the URL of this page directly
 if (isset($_POST['analyze'])) { 
     //Making sure the image we have been submitted is a valid image file, taken from here https://stackoverflow.com/questions/9314164/php-uploading-files-image-only-checking
     // I decided to make use of this function since it is simple and straight forward
