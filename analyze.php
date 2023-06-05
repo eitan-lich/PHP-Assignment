@@ -66,7 +66,7 @@ if (isset($_POST['analyze'])) {
     }
 
     /*
-        Scanning every columnm and every row in the picture, with help of the imagecolorsforindex() function we can retreive the color of the
+        Scanning every columnm and every row in the picture, with help of the imagecolorat() function we can retreive the color of the
         pixel at the specific X,Y coordinate taken from here https://stackoverflow.com/questions/7727843/detecting-colors-for-an-image-using-php
         We need to use the imagecolorsforindex() function in order to convert the value returned from imagecolorat() to a proper array containing 
         values of the pixel regarding its color.
